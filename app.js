@@ -421,8 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     dropBoxes.forEach(box => {
       box.classList.remove('correct', 'hover');
-      const target = box.getAttribute('data-target');
-      box.innerHTML = `<span class="box-placeholder">Drop ${target.charAt(0).toUpperCase() + target.slice(1)} Here</span>`;
+      box.innerHTML = `<span class="box-placeholder">Drop Here</span>`;
     });
 
     draggableItems.forEach(item => {

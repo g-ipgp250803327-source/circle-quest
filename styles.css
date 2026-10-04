@@ -22,7 +22,7 @@
 
   --radius-line-color: #3B82F6;   /* Blue */
   --diameter-line-color: #EC4899; /* Pink */
-  --center-point-color: #F59E0B;  /* Amber */
+  --centre-point-color: #F59E0B;  /* Amber */
   --circumference-color: #8B5CF6; /* Purple */
 
   --font-family-heading: 'Fredoka', 'Comic Sans MS', cursive, sans-serif;
@@ -456,8 +456,8 @@ body {
   stroke: var(--diameter-line-color);
 }
 
-.center-point {
-  fill: var(--center-point-color);
+.centre-point {
+  fill: var(--centre-point-color);
   stroke: #FFFFFF;
   stroke-width: 2;
   transition: transform 0.2s, fill 0.3s, r 0.3s;
@@ -475,7 +475,7 @@ body {
   transition: opacity 0.3s;
 }
 
-.center-label { fill: #D97706; }
+.centre-label { fill: #D97706; }
 .radius-label { fill: #2563EB; }
 .diameter-label { fill: #DB2777; }
 
@@ -488,12 +488,12 @@ body {
   opacity: 0.15;
 }
 
-.center-point.hl-active {
+.centre-point.hl-active {
   r: 12;
   fill: #F59E0B;
 }
 
-.center-point.hl-inactive {
+.centre-point.hl-inactive {
   opacity: 0.2;
 }
 
@@ -597,129 +597,233 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   10. Drag and Drop Activity Styling
+   10. Drag and Drop Activity Styling (Redesigned & Enlarged)
    -------------------------------------------------------------------------- */
 .activity-instructions {
   color: var(--text-muted);
   margin-bottom: 1.5rem;
   text-align: center;
+  font-size: 1.05rem;
 }
 
 .drag-source-container {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
   justify-content: center;
   flex-wrap: wrap;
+  min-height: 52px;
 }
 
 .draggable-item {
   font-family: var(--font-family-heading);
-  font-size: 1.1rem;
+  font-size: 1.15rem;
   font-weight: 700;
   background-color: var(--primary);
   color: #FFFFFF;
-  padding: 0.6rem 1.2rem;
-  border-radius: 25px;
+  padding: 0.65rem 1.4rem;
+  border-radius: 30px;
   cursor: grab;
   user-select: none;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12);
   transition: transform 0.2s, background-color 0.2s, opacity 0.2s;
 }
 
 .draggable-item:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px) scale(1.04);
   background-color: var(--primary-hover);
 }
 
 .draggable-item.selected {
   outline: 4px solid var(--accent);
-  transform: scale(1.1);
+  transform: scale(1.08);
+}
+
+.draggable-item.shake {
+  animation: shakeAnimation 0.4s ease-in-out;
 }
 
 .draggable-item.used {
-  opacity: 0.4;
-  cursor: not-allowed;
+  display: none;
 }
 
-.drag-svg-container {
+/* Large Activity Display Layout */
+.lab-drag-layout {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.drag-svg-large-container {
   position: relative;
-  width: 320px;
-  height: 320px;
+  width: 100%;
+  height: auto;
+  min-height: 480px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.drop-zone {
+.drag-svg-large-container svg {
+  width: 100%;
+  height: auto;
+  max-height: 500px;
+}
+
+/* SVG Line & Circle classes for Large Diagram */
+.circle-outline-large {
+  fill: #F8FAFC;
+  stroke: #475569;
+  stroke-width: 6;
+}
+
+.diameter-line-large {
+  stroke: var(--diameter-line-color); /* Pink */
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.radius-line-large {
+  stroke: var(--radius-line-color); /* Blue */
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.centre-point-large {
+  fill: var(--centre-point-color); /* Amber/Yellow */
+  stroke: #FFFFFF;
+  stroke-width: 3;
+}
+
+.leader-line {
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  stroke-dasharray: 6 4;
+}
+
+.leader-pink { stroke: #EC4899; }
+.leader-blue { stroke: #3B82F6; }
+.leader-amber { stroke: #F59E0B; }
+
+/* Outer Drop Target Boxes */
+.drop-target-box {
   position: absolute;
-  min-width: 110px;
-  min-height: 40px;
-  border: 2px dashed #94A3B8;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 20px;
+  width: 160px;
+  height: 58px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.2rem 0.6rem;
+  padding: 0.5rem 0.8rem;
   font-family: var(--font-family-heading);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.drop-zone:hover {
-  border-color: var(--primary);
-  background: #EEF2FF;
-}
-
-.drop-zone.filled {
-  border-style: solid;
-  border-color: var(--primary);
-  background: #E0E7FF;
-  color: var(--primary);
+  font-size: 1rem;
   font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: var(--shadow-md);
+  text-align: center;
 }
 
-.drop-zone.correct {
-  border-color: var(--success);
-  background: #DCFCE7;
-  color: #15803D;
+.box-placeholder {
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 
-.drop-zone.incorrect {
-  border-color: var(--danger);
-  background: #FEE2E2;
-  color: #B91C1C;
+/* Diameter Target (Left) */
+.drop-target-box.box-diameter {
+  top: 41%;
+  left: 0;
+  border: 3px dashed #EC4899;
+  color: #BE185D;
 }
 
-.activity-controls {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
+/* Radius Target (Upper Right) */
+.drop-target-box.box-radius {
+  top: 18%;
+  right: 0;
+  border: 3px dashed #3B82F6;
+  color: #1D4ED8;
 }
 
-.feedback-banner {
+/* Centre Target (Bottom) */
+.drop-target-box.box-centre {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 3px dashed #F59E0B;
+  color: #B45309;
+}
+
+.drop-target-box:hover {
+  transform: scale(1.05);
+}
+
+.drop-target-box.box-centre:hover {
+  transform: translateX(-50%) scale(1.05);
+}
+
+.drop-target-box.hover {
+  background: #EEF2FF;
+  border-style: solid;
+}
+
+.drop-target-box.correct {
+  background-color: #DCFCE7 !important;
+  border: 3px solid #16A34A !important;
+  color: #15803D !important;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
+}
+
+/* Responsive adjustment for small mobile screens */
+@media (max-width: 600px) {
+  .drag-svg-large-container {
+    min-height: 420px;
+  }
+
+  .drop-target-box {
+    width: 125px;
+    height: 50px;
+    font-size: 0.85rem;
+  }
+
+  .box-placeholder {
+    font-size: 0.78rem;
+  }
+
+  .drop-target-box.box-radius {
+    top: 5%;
+    right: 0;
+  }
+
+  .drop-target-box.box-diameter {
+    top: 42%;
+    left: 0;
+  }
+}
+
+.hint-banner {
   margin-top: 1.5rem;
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 1.2rem;
   border-radius: 12px;
   text-align: center;
   font-family: var(--font-family-heading);
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   font-weight: 700;
+  animation: fadeIn 0.3s;
 }
 
-.feedback-banner.success {
+.hint-banner.info {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 2px solid #FCD34D;
+}
+
+.hint-banner.success {
   background-color: #DCFCE7;
   color: #166534;
   border: 2px solid #86EFAC;
-}
-
-.feedback-banner.error {
-  background-color: #FEE2E2;
-  color: #991B1B;
-  border: 2px solid #FCA5A5;
 }
 
 /* --------------------------------------------------------------------------
@@ -980,4 +1084,10 @@ body {
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+
+@keyframes shakeAnimation {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
 }

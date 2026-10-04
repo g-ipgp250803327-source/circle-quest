@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
     quizCurrentIndex: 0,
     quizStreak: 0,
     quizScore: 0,
-    currentRealObject: 'clock'
+    currentRealObject: 'clock',
+    dragCorrectCount: 0
   };
 
   /* ==========================================================================
@@ -138,42 +139,42 @@ document.addEventListener('DOMContentLoaded', () => {
      3. Mission 1: Feature 1 - Tap to Highlight Parts
      ========================================================================== */
   const highlightData = {
-    center: {
+    centre: {
       title: '📍 Centre (Middle Point)',
       text: 'The <strong>centre</strong> is the exact middle point of a circle. Every point on the outer boundary is at the exact same distance from the centre!',
       activate: () => {
-        setHighlightState({ center: true, radius: false, diameter: false, circumference: false });
+        setHighlightState({ centre: true, radius: false, diameter: false, circumference: false });
       }
     },
     radius: {
       title: '📏 Radius (Half Distance)',
       text: 'The <strong>radius</strong> is a straight line from the <strong>centre</strong> to any point on the outer edge. It is exactly half of the diameter!',
       activate: () => {
-        setHighlightState({ center: true, radius: true, diameter: false, circumference: false });
+        setHighlightState({ centre: true, radius: true, diameter: false, circumference: false });
       }
     },
     diameter: {
       title: '↔️ Diameter (Full Distance Across)',
       text: 'The <strong>diameter</strong> is a straight line passing through the <strong>centre</strong> from one side of the circle to the other. It is twice as long as the radius (<strong>Diameter = 2 × Radius</strong>)!',
       activate: () => {
-        setHighlightState({ center: true, radius: false, diameter: true, circumference: false });
+        setHighlightState({ centre: true, radius: false, diameter: true, circumference: false });
       }
     },
     circumference: {
       title: '⭕ Circumference (Outer Perimeter)',
       text: 'The <strong>circumference</strong> is the total distance around the outside edge of the circle.',
       activate: () => {
-        setHighlightState({ center: false, radius: false, diameter: false, circumference: true });
+        setHighlightState({ centre: false, radius: false, diameter: false, circumference: true });
       }
     }
   };
 
-  function setHighlightState({ center, radius, diameter, circumference }) {
+  function setHighlightState({ centre, radius, diameter, circumference }) {
     const bgCircle = document.getElementById('tap-circle-bg');
     const radiusLine = document.getElementById('tap-radius-line');
     const diameterLine = document.getElementById('tap-diameter-line');
-    const centerPoint = document.getElementById('tap-center-point');
-    const centerText = document.getElementById('tap-center-text');
+    const centrePoint = document.getElementById('tap-centre-point');
+    const centreText = document.getElementById('tap-centre-text');
     const radiusText = document.getElementById('tap-radius-text');
     const diameterText = document.getElementById('tap-diameter-text');
 
@@ -202,15 +203,15 @@ document.addEventListener('DOMContentLoaded', () => {
       diameterText.style.opacity = '0.2';
     }
 
-    // Center point
-    if (center) {
-      centerPoint.classList.add('hl-active');
-      centerPoint.classList.remove('hl-inactive');
-      centerText.style.opacity = '1';
+    // Centre point
+    if (centre) {
+      centrePoint.classList.add('hl-active');
+      centrePoint.classList.remove('hl-inactive');
+      centreText.style.opacity = '1';
     } else {
-      centerPoint.classList.remove('hl-active');
-      centerPoint.classList.add('hl-inactive');
-      centerText.style.opacity = '0.2';
+      centrePoint.classList.remove('hl-active');
+      centrePoint.classList.add('hl-inactive');
+      centreText.style.opacity = '0.2';
     }
   }
 
@@ -231,7 +232,9 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Default initial state
-  highlightData.center.activate();
+  if (highlightData.centre) {
+    highlightData.centre.activate();
+  }
 
   /* ==========================================================================
      4. Mission 1: Feature 2 - Radius Slider & Live Calculation
@@ -287,15 +290,27 @@ document.addEventListener('DOMContentLoaded', () => {
   updateRadiusSlider(); // Initial draw
 
   /* ==========================================================================
-     5. Mission 1: Feature 3 - Drag & Drop Activity
+     5. Mission 1: Feature 3 - Redesigned Drag & Drop Activity Logic
      ========================================================================== */
   const draggableItems = document.querySelectorAll('.draggable-item');
-  const dropZones = document.querySelectorAll('.drop-zone');
-  const checkDragBtn = document.getElementById('check-drag-btn');
+  const dropBoxes = document.querySelectorAll('.drop-target-box');
+  const dragHintBanner = document.getElementById('drag-hint-banner');
   const resetDragBtn = document.getElementById('reset-drag-btn');
-  const dragFeedback = document.getElementById('drag-feedback');
 
-  // HTML5 Drag and Drop Handlers
+  // Hints dictionary for incorrect drops
+  const partHints = {
+    radius: 'Hint: The radius is a line going from the centre dot to the outer edge of the circle.',
+    diameter: 'Hint: The diameter is a straight line going all the way across the circle through the centre.',
+    centre: 'Hint: The centre is the exact middle dot of the circle.'
+  };
+
+  const labelDisplayNames = {
+    centre: '📍 Centre',
+    radius: '📏 Radius',
+    diameter: '↔️ Diameter'
+  };
+
+  // Drag start/end handlers for HTML5 drag and drop
   draggableItems.forEach(item => {
     item.addEventListener('dragstart', (e) => {
       e.dataTransfer.setData('text/plain', item.getAttribute('data-type'));
@@ -307,10 +322,12 @@ document.addEventListener('DOMContentLoaded', () => {
       item.classList.remove('dragging');
     });
 
-    // Touch / Tap fallback selection for touchscreens
+    // Touch / Tap fallback selection for mobile/tablets
     item.addEventListener('click', () => {
+      if (item.classList.contains('used')) return;
       playSound('click');
       draggableItems.forEach(i => i.classList.remove('selected'));
+
       if (gameState.dragSelectedTag === item) {
         gameState.dragSelectedTag = null;
       } else {
@@ -320,110 +337,100 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  dropZones.forEach(zone => {
-    zone.addEventListener('dragover', (e) => {
+  dropBoxes.forEach(box => {
+    box.addEventListener('dragover', (e) => {
       e.preventDefault();
-      zone.classList.add('hover');
+      box.classList.add('hover');
     });
 
-    zone.addEventListener('dragleave', () => {
-      zone.classList.remove('hover');
+    box.addEventListener('dragleave', () => {
+      box.classList.remove('hover');
     });
 
-    zone.addEventListener('drop', (e) => {
+    box.addEventListener('drop', (e) => {
       e.preventDefault();
-      zone.classList.remove('hover');
-      const type = e.dataTransfer.getData('text/plain');
+      box.classList.remove('hover');
+      const droppedType = e.dataTransfer.getData('text/plain');
       const sourceId = e.dataTransfer.getData('source-id');
-      placeLabelInZone(zone, type, sourceId);
+      const sourceElement = document.getElementById(sourceId) || document.querySelector(`.draggable-item[data-type="${droppedType}"]`);
+
+      handleLabelDrop(box, droppedType, sourceElement);
     });
 
-    // Click handler for tap-to-place on mobile
-    zone.addEventListener('click', () => {
+    // Click handler for tap-to-select fallback
+    box.addEventListener('click', () => {
+      if (box.classList.contains('correct')) return; // Already filled correctly
+
       if (gameState.dragSelectedTag) {
-        const type = gameState.dragSelectedTag.getAttribute('data-type');
-        const sourceId = gameState.dragSelectedTag.id;
-        placeLabelInZone(zone, type, sourceId);
-        gameState.dragSelectedTag.classList.remove('selected');
+        const droppedType = gameState.dragSelectedTag.getAttribute('data-type');
+        const sourceElement = gameState.dragSelectedTag;
+
+        handleLabelDrop(box, droppedType, sourceElement);
+
+        sourceElement.classList.remove('selected');
         gameState.dragSelectedTag = null;
       }
     });
   });
 
-  function placeLabelInZone(zone, type, sourceId) {
-    playSound('click');
-    const labelNames = {
-      center: '📍 Centre',
-      radius: '📏 Radius',
-      diameter: '↔️ Diameter'
-    };
+  function handleLabelDrop(box, droppedType, sourceElement) {
+    const targetType = box.getAttribute('data-target');
 
-    // If another tag was already here, reset it
-    const currentPlacedType = zone.getAttribute('data-placed');
-    if (currentPlacedType) {
-      const prevTag = document.querySelector(`.draggable-item[data-type="${currentPlacedType}"]`);
-      if (prevTag) prevTag.classList.remove('used');
+    if (droppedType === targetType) {
+      // Correct drop!
+      playSound('correct');
+      box.classList.add('correct');
+      box.innerHTML = `<span>✓ ${labelDisplayNames[droppedType]}</span>`;
+
+      if (sourceElement) {
+        sourceElement.classList.add('used');
+      }
+
+      gameState.dragCorrectCount++;
+
+      dragHintBanner.hidden = false;
+      dragHintBanner.className = 'hint-banner success';
+      dragHintBanner.textContent = `Great job! You identified the ${droppedType.charAt(0).toUpperCase() + droppedType.slice(1)} correctly! 🎉`;
+
+      // Check if all 3 parts are completed
+      if (gameState.dragCorrectCount === 3) {
+        addStars(3);
+        dragHintBanner.textContent = '🎉 Well done! You labeled all parts of the circle correctly! (+3 Stars)';
+        resetDragBtn.hidden = false;
+      }
+    } else {
+      // Incorrect drop!
+      playSound('wrong');
+
+      if (sourceElement) {
+        sourceElement.classList.add('shake');
+        setTimeout(() => sourceElement.classList.remove('shake'), 400);
+      }
+
+      dragHintBanner.hidden = false;
+      dragHintBanner.className = 'hint-banner info';
+      dragHintBanner.textContent = partHints[droppedType] || 'Not quite! Try matching the label to a different part.';
     }
-
-    zone.setAttribute('data-placed', type);
-    zone.classList.add('filled');
-    zone.classList.remove('correct', 'incorrect');
-    zone.innerHTML = `<span>${labelNames[type]}</span>`;
-
-    const sourceTag = document.getElementById(sourceId) || document.querySelector(`.draggable-item[data-type="${type}"]`);
-    if (sourceTag) sourceTag.classList.add('used');
   }
 
-  checkDragBtn.addEventListener('click', () => {
-    let allFilled = true;
-    let correctCount = 0;
-
-    dropZones.forEach(zone => {
-      const target = zone.getAttribute('data-target');
-      const placed = zone.getAttribute('data-placed');
-
-      if (!placed) {
-        allFilled = false;
-        zone.classList.remove('correct', 'incorrect');
-      } else if (placed === target) {
-        correctCount++;
-        zone.classList.add('correct');
-        zone.classList.remove('incorrect');
-      } else {
-        zone.classList.add('incorrect');
-        zone.classList.remove('correct');
-      }
-    });
-
-    dragFeedback.hidden = false;
-    if (!allFilled) {
-      playSound('wrong');
-      dragFeedback.className = 'feedback-banner error';
-      dragFeedback.textContent = 'Please place all labels on the circle before checking!';
-    } else if (correctCount === 3) {
-      playSound('correct');
-      addStars(3);
-      dragFeedback.className = 'feedback-banner success';
-      dragFeedback.textContent = '🎉 Excellent! All circle parts labeled correctly! (+3 Stars)';
-    } else {
-      playSound('wrong');
-      dragFeedback.className = 'feedback-banner error';
-      dragFeedback.textContent = `Almost there! You got ${correctCount} out of 3 correct. Try again!`;
-    }
-  });
-
+  // Reset / Play Again activity handler
   resetDragBtn.addEventListener('click', () => {
     playSound('click');
-    dropZones.forEach(zone => {
-      zone.removeAttribute('data-placed');
-      zone.classList.remove('filled', 'correct', 'incorrect');
-      const target = zone.getAttribute('data-target');
-      zone.innerHTML = `<span class="drop-placeholder">Drop ${target.charAt(0).toUpperCase() + target.slice(1)} Here</span>`;
+    gameState.dragCorrectCount = 0;
+    gameState.dragSelectedTag = null;
+
+    dropBoxes.forEach(box => {
+      box.classList.remove('correct', 'hover');
+      const target = box.getAttribute('data-target');
+      box.innerHTML = `<span class="box-placeholder">Drop ${target.charAt(0).toUpperCase() + target.slice(1)} Here</span>`;
     });
 
-    draggableItems.forEach(item => item.classList.remove('used', 'selected'));
-    gameState.dragSelectedTag = null;
-    dragFeedback.hidden = true;
+    draggableItems.forEach(item => {
+      item.classList.remove('used', 'selected', 'shake');
+    });
+
+    dragHintBanner.hidden = true;
+    resetDragBtn.hidden = true;
   });
 
   /* ==========================================================================

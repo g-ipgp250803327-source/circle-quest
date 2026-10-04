@@ -89,7 +89,7 @@
         <div class="lab-card">
           <h3>Tap a button to highlight a part of the circle!</h3>
           <div class="highlight-buttons">
-            <button class="hl-btn active" data-part="center">📍 Centre</button>
+            <button class="hl-btn active" data-part="centre">📍 Centre</button>
             <button class="hl-btn" data-part="radius">📏 Radius</button>
             <button class="hl-btn" data-part="diameter">↔️ Diameter</button>
             <button class="hl-btn" data-part="circumference">⭕ Circumference</button>
@@ -106,10 +106,10 @@
               <!-- Radius Line -->
               <line id="tap-radius-line" x1="150" y1="150" x2="250" y2="150" class="circle-line radius-line" />
               <circle id="tap-radius-end" cx="250" cy="150" r="4" class="dot-marker" />
-              <!-- Center Point -->
-              <circle id="tap-center-point" cx="150" cy="150" r="8" class="center-point hl-active" />
+              <!-- Centre Point -->
+              <circle id="tap-centre-point" cx="150" cy="150" r="8" class="centre-point hl-active" />
               <!-- Labels in SVG -->
-              <text id="tap-center-text" x="150" y="135" class="svg-label center-label">Centre (O)</text>
+              <text id="tap-centre-text" x="150" y="135" class="svg-label centre-label">Centre (O)</text>
               <text id="tap-radius-text" x="195" y="140" class="svg-label radius-label">Radius (r)</text>
               <text id="tap-diameter-text" x="150" y="175" class="svg-label diameter-label">Diameter (d)</text>
             </svg>
@@ -149,7 +149,7 @@
               <circle id="slider-circle-bg" cx="160" cy="160" r="75" class="circle-outline" />
               <line id="slider-diameter-line" x1="85" y1="160" x2="235" y2="160" class="circle-line diameter-line" />
               <line id="slider-radius-line" x1="160" y1="160" x2="235" y2="160" class="circle-line radius-line" />
-              <circle id="slider-center-point" cx="160" cy="160" r="6" class="center-point" />
+              <circle id="slider-centre-point" cx="160" cy="160" r="6" class="centre-point" />
               <text id="slider-svg-radius-label" x="195" y="150" class="svg-label radius-label">r = 5 cm</text>
               <text id="slider-svg-diameter-label" x="160" y="185" class="svg-label diameter-label">d = 10 cm</text>
             </svg>
@@ -161,43 +161,76 @@
       <div id="lab-drag" class="subtab-content">
         <div class="lab-card">
           <h3>Drag (or tap) labels to match the correct parts of the circle!</h3>
-          <p class="activity-instructions">Drag each tag or tap a tag then tap its matching drop target on the circle.</p>
+          <p class="activity-instructions">Drag a label or tap a label then tap its matching drop target box around the circle.</p>
 
+          <!-- Label Tray -->
           <div class="drag-source-container" id="draggable-items">
-            <div class="draggable-item" draggable="true" data-type="center" id="drag-center">📍 Centre</div>
+            <div class="draggable-item" draggable="true" data-type="centre" id="drag-centre">📍 Centre</div>
             <div class="draggable-item" draggable="true" data-type="radius" id="drag-radius">📏 Radius</div>
             <div class="draggable-item" draggable="true" data-type="diameter" id="drag-diameter">↔️ Diameter</div>
           </div>
 
-          <div class="svg-wrapper drag-svg-container">
-            <svg id="drag-circle-svg" viewBox="0 0 320 320" aria-label="Circle Drag and Drop Target Diagram">
-              <circle cx="160" cy="160" r="90" class="circle-outline" />
-              <!-- Diameter line -->
-              <line x1="70" y1="160" x2="250" y2="160" class="circle-line diameter-line" />
-              <!-- Radius line -->
-              <line x1="160" y1="160" x2="160" y2="70" class="circle-line radius-line" />
-              <!-- Center point -->
-              <circle cx="160" cy="160" r="7" class="center-point" />
-            </svg>
+          <!-- Activity Display Area with Large Circle and Outer Drop Boxes -->
+          <div class="lab-drag-layout">
+            <div class="drag-svg-large-container">
+              <svg id="drag-circle-svg-large" viewBox="0 0 600 520" aria-label="Large Circle Labeling Diagram">
+                <!-- SVG Definitions for Arrowhead Markers -->
+                <defs>
+                  <marker id="arrow-blue" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#3B82F6"/>
+                  </marker>
+                  <marker id="arrow-pink" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#EC4899"/>
+                  </marker>
+                  <marker id="arrow-amber" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 0 0 L 10 5 L 0 10 z" fill="#F59E0B"/>
+                  </marker>
+                </defs>
 
-            <!-- Drop Zone Overlays (positioned relative to container) -->
-            <div class="drop-zone" data-target="center" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
-              <span class="drop-placeholder">Drop Centre Here</span>
-            </div>
-            <div class="drop-zone" data-target="radius" style="top: 28%; left: 50%; transform: translate(-50%, -50%);">
-              <span class="drop-placeholder">Drop Radius Here</span>
-            </div>
-            <div class="drop-zone" data-target="diameter" style="top: 58%; left: 50%; transform: translate(-50%, -50%);">
-              <span class="drop-placeholder">Drop Diameter Here</span>
+                <!-- Main Large Circle (Center at 300, 260, Radius 130) -->
+                <circle cx="300" cy="260" r="130" class="circle-outline-large" />
+
+                <!-- 1. Diameter Line (Pink, horizontal across whole circle) -->
+                <line x1="170" y1="260" x2="430" y2="260" class="circle-line diameter-line-large" />
+
+                <!-- 2. Radius Line (Blue, from centre to top-right boundary at 45 degrees) -->
+                <line x1="300" y1="260" x2="392" y2="168" class="circle-line radius-line-large" />
+
+                <!-- 3. Centre Dot (Amber/Yellow dot) -->
+                <circle cx="300" cy="260" r="12" class="centre-point-large" />
+
+                <!-- Pointer Leader Lines to Outer Drop Targets -->
+                <!-- Pointer to Diameter (Left): From (210, 260) to (120, 260) -->
+                <path d="M 210 260 L 120 260" class="leader-line leader-pink" marker-start="url(#arrow-pink)" />
+
+                <!-- Pointer to Radius (Upper Right): From midpoint of radius line (346, 214) to (470, 120) -->
+                <path d="M 346 214 L 470 120" class="leader-line leader-blue" marker-start="url(#arrow-blue)" />
+
+                <!-- Pointer to Centre (Bottom): From (300, 275) down to (300, 420) -->
+                <path d="M 300 275 L 300 420" class="leader-line leader-amber" marker-start="url(#arrow-amber)" />
+              </svg>
+
+              <!-- Outer Drop Boxes (Positioned in Grid around Large Circle) -->
+              <div class="drop-target-box box-diameter" data-target="diameter" tabindex="0" role="region" aria-label="Drop target for Diameter">
+                <span class="box-placeholder">Drop Diameter Here</span>
+              </div>
+
+              <div class="drop-target-box box-radius" data-target="radius" tabindex="0" role="region" aria-label="Drop target for Radius">
+                <span class="box-placeholder">Drop Radius Here</span>
+              </div>
+
+              <div class="drop-target-box box-centre" data-target="centre" tabindex="0" role="region" aria-label="Drop target for Centre">
+                <span class="box-placeholder">Drop Centre Here</span>
+              </div>
             </div>
           </div>
+
+          <!-- Activity Feedback Banner & Reset Controls -->
+          <div id="drag-hint-banner" class="hint-banner" hidden></div>
 
           <div class="activity-controls">
-            <button id="check-drag-btn" class="btn btn-primary">Check Answers</button>
-            <button id="reset-drag-btn" class="btn btn-outline">Reset Activity</button>
+            <button id="reset-drag-btn" class="btn btn-outline" hidden>Play Again 🔄</button>
           </div>
-
-          <div id="drag-feedback" class="feedback-banner" hidden></div>
         </div>
       </div>
     </section>

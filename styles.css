@@ -1,0 +1,983 @@
+/* ==========================================================================
+   Circle Quest - Game CSS
+   Designed for Malaysian Year 6 KSSR Mathematics (6.2.1 & 6.2.2)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties & Variables
+   -------------------------------------------------------------------------- */
+:root {
+  --primary: #4F46E5;        /* Indigo */
+  --primary-hover: #4338CA;
+  --secondary: #10B981;      /* Emerald Green */
+  --secondary-hover: #059669;
+  --accent: #F59E0B;         /* Vibrant Amber */
+  --accent-hover: #D97706;
+  --danger: #EF4444;         /* Red */
+  --success: #22C55E;        /* Bright Green */
+  --bg-color: #F0F4F8;       /* Very Light Blue-Gray */
+  --card-bg: #FFFFFF;
+  --text-main: #1E293B;      /* Slate 800 */
+  --text-muted: #64748B;     /* Slate 500 */
+
+  --radius-line-color: #3B82F6;   /* Blue */
+  --diameter-line-color: #EC4899; /* Pink */
+  --center-point-color: #F59E0B;  /* Amber */
+  --circumference-color: #8B5CF6; /* Purple */
+
+  --font-family-heading: 'Fredoka', 'Comic Sans MS', cursive, sans-serif;
+  --font-family-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+  --border-radius: 16px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Base & Reset Styles
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-body);
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   3. Header / Top Navigation
+   -------------------------------------------------------------------------- */
+.game-header {
+  background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  color: #FFFFFF;
+  padding: 0.8rem 1.5rem;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.logo-icon {
+  font-size: 2.2rem;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.game-title {
+  font-family: var(--font-family-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.1;
+  color: #FFFFFF;
+  text-shadow: 1px 2px 0px rgba(0,0,0,0.2);
+}
+
+.game-subtitle {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.star-badge {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  padding: 0.4rem 0.9rem;
+  border-radius: 30px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  font-size: 1.3rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.35);
+  transform: scale(1.1);
+}
+
+/* --------------------------------------------------------------------------
+   4. Main Container & Views
+   -------------------------------------------------------------------------- */
+.main-container {
+  flex: 1;
+  max-width: 1100px;
+  width: 100%;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+}
+
+.view {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.view.active-view {
+  display: block;
+}
+
+.view-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.view-header h2 {
+  font-family: var(--font-family-heading);
+  font-size: 1.8rem;
+  color: var(--primary);
+}
+
+/* --------------------------------------------------------------------------
+   5. Buttons
+   -------------------------------------------------------------------------- */
+.btn {
+  font-family: var(--font-family-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.15);
+}
+
+.btn:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.15);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--secondary);
+  color: #FFFFFF;
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-hover);
+}
+
+.btn-accent {
+  background-color: var(--accent);
+  color: #FFFFFF;
+}
+
+.btn-accent:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-outline {
+  background-color: #FFFFFF;
+  color: var(--text-main);
+  border: 2px solid #CBD5E1;
+  box-shadow: none;
+}
+
+.btn-outline:hover {
+  background-color: #F1F5F9;
+  border-color: #94A3B8;
+}
+
+/* --------------------------------------------------------------------------
+   6. Home View / Hero Banner & Mission Cards
+   -------------------------------------------------------------------------- */
+.hero-banner {
+  background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  border: 2px solid #C7D2FE;
+}
+
+.hero-banner h2 {
+  font-family: var(--font-family-heading);
+  font-size: 2rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.hero-banner p {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.mission-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.8rem;
+  box-shadow: var(--shadow-md);
+  border: 3px solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.mission-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: #E0E7FF;
+  color: var(--primary);
+  font-size: 0.8rem;
+  font-weight: 800;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.card-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.mission-card h3 {
+  font-family: var(--font-family-heading);
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-main);
+}
+
+.mission-card p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.start-mission-btn {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   7. Mission Views - Sub Navigation
+   -------------------------------------------------------------------------- */
+.sub-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  background-color: #E2E8F0;
+  padding: 0.4rem;
+  border-radius: 12px;
+  overflow-x: auto;
+}
+
+.sub-tab {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border: none;
+  background: transparent;
+  font-family: var(--font-family-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.sub-tab.active {
+  background-color: #FFFFFF;
+  color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.subtab-content {
+  display: none;
+}
+
+.subtab-content.active {
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   8. Lab Cards & Interactive SVG Styling
+   -------------------------------------------------------------------------- */
+.lab-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--shadow-md);
+  border: 2px solid #E2E8F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lab-card h3 {
+  font-family: var(--font-family-heading);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Highlight buttons for Subtab 1 */
+.highlight-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.hl-btn {
+  font-family: var(--font-family-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: 25px;
+  border: 2px solid #CBD5E1;
+  background-color: #F8FAFC;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.hl-btn:hover {
+  background-color: #E2E8F0;
+}
+
+.hl-btn.active {
+  background-color: var(--primary);
+  color: #FFFFFF;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-sm);
+}
+
+.svg-wrapper {
+  width: 100%;
+  max-width: 320px;
+  margin: 1rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.svg-wrapper svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* SVG Line & Circle classes */
+.circle-outline {
+  fill: #F1F5F9;
+  stroke: #64748B;
+  stroke-width: 4;
+  transition: stroke 0.3s, stroke-width 0.3s;
+}
+
+.circle-line {
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: opacity 0.3s, stroke 0.3s, stroke-width 0.3s;
+}
+
+.radius-line {
+  stroke: var(--radius-line-color);
+}
+
+.diameter-line {
+  stroke: var(--diameter-line-color);
+}
+
+.center-point {
+  fill: var(--center-point-color);
+  stroke: #FFFFFF;
+  stroke-width: 2;
+  transition: transform 0.2s, fill 0.3s, r 0.3s;
+}
+
+.dot-marker {
+  fill: #1E293B;
+}
+
+.svg-label {
+  font-family: var(--font-family-heading);
+  font-size: 14px;
+  font-weight: 700;
+  text-anchor: middle;
+  transition: opacity 0.3s;
+}
+
+.center-label { fill: #D97706; }
+.radius-label { fill: #2563EB; }
+.diameter-label { fill: #DB2777; }
+
+.circle-outline.hl-active {
+  stroke: var(--circumference-color);
+  stroke-width: 8;
+}
+
+.circle-line.hl-inactive {
+  opacity: 0.15;
+}
+
+.center-point.hl-active {
+  r: 12;
+  fill: #F59E0B;
+}
+
+.center-point.hl-inactive {
+  opacity: 0.2;
+}
+
+/* Info box explanation */
+.info-box {
+  width: 100%;
+  background-color: #FEF3C7;
+  border-left: 6px solid var(--accent);
+  padding: 1.2rem;
+  border-radius: 12px;
+  margin-top: 1.5rem;
+}
+
+.info-box h4 {
+  font-family: var(--font-family-heading);
+  font-size: 1.2rem;
+  color: #B45309;
+  margin-bottom: 0.3rem;
+}
+
+.info-box p {
+  font-size: 1.05rem;
+  color: #78350F;
+}
+
+/* --------------------------------------------------------------------------
+   9. Radius Slider & Live Calculation Box
+   -------------------------------------------------------------------------- */
+.slider-control-panel {
+  width: 100%;
+  max-width: 420px;
+  background: #F1F5F9;
+  padding: 1.2rem;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.slider-control-panel label {
+  font-size: 1.2rem;
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--primary);
+}
+
+.slider-control-panel input[type=range] {
+  width: 100%;
+  accent-color: var(--primary);
+  height: 10px;
+  cursor: pointer;
+}
+
+.formula-banner {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  max-width: 550px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.formula-box {
+  flex: 1;
+  min-width: 220px;
+  background: #EEF2FF;
+  border: 2px dashed #818CF8;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.formula-box.secondary {
+  background: #ECFDF5;
+  border-color: #34D399;
+}
+
+.formula-title {
+  font-size: 0.85rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.formula-math {
+  font-family: var(--font-family-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.formula-box.secondary .formula-math {
+  color: var(--secondary);
+}
+
+.formula-calc {
+  font-size: 1.15rem;
+  color: var(--text-main);
+}
+
+/* --------------------------------------------------------------------------
+   10. Drag and Drop Activity Styling
+   -------------------------------------------------------------------------- */
+.activity-instructions {
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.drag-source-container {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.draggable-item {
+  font-family: var(--font-family-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  background-color: var(--primary);
+  color: #FFFFFF;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  cursor: grab;
+  user-select: none;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s, background-color 0.2s, opacity 0.2s;
+}
+
+.draggable-item:hover {
+  transform: scale(1.05);
+  background-color: var(--primary-hover);
+}
+
+.draggable-item.selected {
+  outline: 4px solid var(--accent);
+  transform: scale(1.1);
+}
+
+.draggable-item.used {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.drag-svg-container {
+  position: relative;
+  width: 320px;
+  height: 320px;
+}
+
+.drop-zone {
+  position: absolute;
+  min-width: 110px;
+  min-height: 40px;
+  border: 2px dashed #94A3B8;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem 0.6rem;
+  font-family: var(--font-family-heading);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.drop-zone:hover {
+  border-color: var(--primary);
+  background: #EEF2FF;
+}
+
+.drop-zone.filled {
+  border-style: solid;
+  border-color: var(--primary);
+  background: #E0E7FF;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.drop-zone.correct {
+  border-color: var(--success);
+  background: #DCFCE7;
+  color: #15803D;
+}
+
+.drop-zone.incorrect {
+  border-color: var(--danger);
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+.activity-controls {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.feedback-banner {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  text-align: center;
+  font-family: var(--font-family-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.feedback-banner.success {
+  background-color: #DCFCE7;
+  color: #166534;
+  border: 2px solid #86EFAC;
+}
+
+.feedback-banner.error {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  border: 2px solid #FCA5A5;
+}
+
+/* --------------------------------------------------------------------------
+   11. Mission 2: Quiz Arena
+   -------------------------------------------------------------------------- */
+.quiz-container {
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.quiz-meta {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--font-family-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.quiz-question-box {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-question-box h3 {
+  font-size: 1.35rem;
+  margin-bottom: 1rem;
+  color: var(--text-main);
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 500px) {
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.opt-btn {
+  font-family: var(--font-family-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 1rem;
+  border-radius: 12px;
+  border: 2px solid #CBD5E1;
+  background-color: #FFFFFF;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.opt-btn:hover {
+  background-color: #F1F5F9;
+  border-color: var(--primary);
+}
+
+.opt-btn.correct-opt {
+  background-color: #DCFCE7 !important;
+  border-color: var(--success) !important;
+  color: #15803D !important;
+}
+
+.opt-btn.wrong-opt {
+  background-color: #FEE2E2 !important;
+  border-color: var(--danger) !important;
+  color: #B91C1C !important;
+}
+
+.result-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.result-badge {
+  display: inline-block;
+  background: #FEF3C7;
+  color: #B45309;
+  font-family: var(--font-family-heading);
+  font-weight: 800;
+  padding: 0.4rem 1rem;
+  border-radius: 30px;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.stars-display {
+  font-size: 3rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   12. Mission 3: Real-Life Mission
+   -------------------------------------------------------------------------- */
+.object-selector {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.obj-btn {
+  font-family: var(--font-family-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  border: 2px solid #CBD5E1;
+  background-color: #F8FAFC;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.obj-btn:hover {
+  background-color: #E2E8F0;
+}
+
+.obj-btn.active {
+  background-color: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+  box-shadow: var(--shadow-sm);
+}
+
+.object-display-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 100%;
+  align-items: center;
+}
+
+@media (max-width: 650px) {
+  .object-display-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.object-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F8FAFC;
+  border-radius: 16px;
+  padding: 1rem;
+  border: 2px dashed #CBD5E1;
+}
+
+.object-details h3 {
+  font-size: 1.6rem;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.object-details p {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+.object-measurements {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.meas-item {
+  background: #F1F5F9;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  flex: 1;
+}
+
+.meas-item .label {
+  font-size: 0.85rem;
+  display: block;
+  color: var(--text-muted);
+}
+
+.meas-item .value {
+  font-family: var(--font-family-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.challenge-box {
+  background: #F0FDF4;
+  border: 2px solid #86EFAC;
+  padding: 1.2rem;
+  border-radius: 12px;
+}
+
+.challenge-box h4 {
+  color: #166534;
+  font-family: var(--font-family-heading);
+  margin-bottom: 0.5rem;
+}
+
+.challenge-input-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.challenge-input-row input {
+  flex: 1;
+  font-family: var(--font-family-heading);
+  font-size: 1.1rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  border: 2px solid #A7F3D0;
+  outline: none;
+}
+
+.challenge-input-row input:focus {
+  border-color: var(--secondary);
+}
+
+.challenge-feedback {
+  margin-top: 0.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* --------------------------------------------------------------------------
+   13. Footer
+   -------------------------------------------------------------------------- */
+.game-footer {
+  margin-top: auto;
+  background-color: #1E293B;
+  color: #94A3B8;
+  text-align: center;
+  padding: 1.2rem 1rem;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   14. Animations
+   -------------------------------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}

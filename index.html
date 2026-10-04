@@ -2,11 +2,310 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Circle Quest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circle Quest - Year 6 KSSR Mathematics</title>
+  <!-- Google Fonts for playful game typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Circle Quest</h1>
-  <p>Coming soon...</p>
+  <!-- Header / Top Bar -->
+  <header class="game-header">
+    <div class="header-container">
+      <div class="brand" id="brand-logo" role="button" tabindex="0">
+        <span class="logo-icon">🟡</span>
+        <div class="brand-text">
+          <h1 class="game-title">Circle Quest</h1>
+          <p class="game-subtitle">Year 6 KSSR Math (6.2.1 & 6.2.2)</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <div class="star-badge" title="Total Stars Earned">
+          <span class="star-icon">⭐</span>
+          <span id="star-count">0</span>
+        </div>
+        <button id="sound-btn" class="icon-btn" aria-label="Toggle Sound Effects">🔊</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-container">
+    <!-- HOME VIEW: Mission Select Menu -->
+    <section id="home-view" class="view active-view">
+      <div class="hero-banner">
+        <h2>Welcome to Circle Quest, Explorer! 🚀</h2>
+        <p>Master the secrets of circles! Learn about <strong>Centre</strong>, <strong>Radius</strong>, and <strong>Diameter</strong>.</p>
+      </div>
+
+      <div class="mission-grid">
+        <!-- Mission 1 Card -->
+        <article class="mission-card" id="card-mission1">
+          <div class="card-badge">Mission 1</div>
+          <div class="card-icon">🔬</div>
+          <h3>Explore Lab</h3>
+          <p>Tap circle parts, play with the radius slider, and drag labels to their spots!</p>
+          <button class="btn btn-primary start-mission-btn" data-target="mission1-view">Start Mission 1 ▶</button>
+        </article>
+
+        <!-- Mission 2 Card -->
+        <article class="mission-card" id="card-mission2">
+          <div class="card-badge">Mission 2</div>
+          <div class="card-icon">🎯</div>
+          <h3>Quiz Arena</h3>
+          <p>Test your circle knowledge! Answer questions, earn stars, and level up!</p>
+          <button class="btn btn-secondary start-mission-btn" data-target="mission2-view">Start Mission 2 ▶</button>
+        </article>
+
+        <!-- Mission 3 Card -->
+        <article class="mission-card" id="card-mission3">
+          <div class="card-badge">Mission 3</div>
+          <div class="card-icon">🚲</div>
+          <h3>Real-Life Mission</h3>
+          <p>Discover circles in Malaysia! Measure wall clocks, bicycle wheels, and roti canai!</p>
+          <button class="btn btn-accent start-mission-btn" data-target="mission3-view">Start Mission 3 ▶</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- MISSION 1 VIEW: Explore Lab -->
+    <section id="mission1-view" class="view">
+      <div class="view-header">
+        <button class="btn btn-outline back-home-btn">← Back to Menu</button>
+        <h2>🔬 Mission 1: Explore Lab</h2>
+      </div>
+
+      <!-- Tab Navigation inside Mission 1 -->
+      <nav class="sub-nav">
+        <button class="sub-tab active" data-subtab="lab-tap">1. Tap to Highlight</button>
+        <button class="sub-tab" data-subtab="lab-slider">2. Radius Slider</button>
+        <button class="sub-tab" data-subtab="lab-drag">3. Drag & Drop Labels</button>
+      </nav>
+
+      <!-- Subtab 1: Tap to Highlight -->
+      <div id="lab-tap" class="subtab-content active">
+        <div class="lab-card">
+          <h3>Tap a button to highlight a part of the circle!</h3>
+          <div class="highlight-buttons">
+            <button class="hl-btn active" data-part="center">📍 Centre</button>
+            <button class="hl-btn" data-part="radius">📏 Radius</button>
+            <button class="hl-btn" data-part="diameter">↔️ Diameter</button>
+            <button class="hl-btn" data-part="circumference">⭕ Circumference</button>
+          </div>
+
+          <div class="svg-wrapper">
+            <svg id="tap-circle-svg" viewBox="0 0 300 300" aria-label="Interactive SVG Circle Diagram">
+              <!-- Background Circle -->
+              <circle id="tap-circle-bg" cx="150" cy="150" r="100" class="circle-outline" />
+              <!-- Diameter Line -->
+              <line id="tap-diameter-line" x1="50" y1="150" x2="250" y2="150" class="circle-line diameter-line hl-active" />
+              <circle id="tap-diameter-end1" cx="50" cy="150" r="4" class="dot-marker" />
+              <circle id="tap-diameter-end2" cx="250" cy="150" r="4" class="dot-marker" />
+              <!-- Radius Line -->
+              <line id="tap-radius-line" x1="150" y1="150" x2="250" y2="150" class="circle-line radius-line" />
+              <circle id="tap-radius-end" cx="250" cy="150" r="4" class="dot-marker" />
+              <!-- Center Point -->
+              <circle id="tap-center-point" cx="150" cy="150" r="8" class="center-point hl-active" />
+              <!-- Labels in SVG -->
+              <text id="tap-center-text" x="150" y="135" class="svg-label center-label">Centre (O)</text>
+              <text id="tap-radius-text" x="195" y="140" class="svg-label radius-label">Radius (r)</text>
+              <text id="tap-diameter-text" x="150" y="175" class="svg-label diameter-label">Diameter (d)</text>
+            </svg>
+          </div>
+
+          <div id="tap-explanation" class="info-box">
+            <h4>📍 Centre</h4>
+            <p>The centre is the exact middle point of a circle. All points on the circle boundary are at equal distance from the centre!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtab 2: Radius Slider -->
+      <div id="lab-slider" class="subtab-content">
+        <div class="lab-card">
+          <h3>Change the radius and watch what happens to the diameter!</h3>
+          <div class="slider-control-panel">
+            <label for="radius-range"><strong>Radius (r): <span id="slider-radius-val">5</span> cm</strong></label>
+            <input type="range" id="radius-range" min="1" max="10" value="5" step="0.5">
+          </div>
+
+          <div class="formula-banner">
+            <div class="formula-box">
+              <span class="formula-title">Live Formula</span>
+              <span class="formula-math">Diameter = 2 × Radius</span>
+              <span class="formula-calc" id="slider-calc-text">Diameter = 2 × 5 cm = <strong>10 cm</strong></span>
+            </div>
+            <div class="formula-box secondary">
+              <span class="formula-title">Reverse Formula</span>
+              <span class="formula-math">Radius = Diameter ÷ 2</span>
+              <span class="formula-calc" id="slider-reverse-calc">Radius = 10 cm ÷ 2 = <strong>5 cm</strong></span>
+            </div>
+          </div>
+
+          <div class="svg-wrapper">
+            <svg id="slider-circle-svg" viewBox="0 0 320 320" aria-label="Dynamic SVG Circle Diagram">
+              <circle id="slider-circle-bg" cx="160" cy="160" r="75" class="circle-outline" />
+              <line id="slider-diameter-line" x1="85" y1="160" x2="235" y2="160" class="circle-line diameter-line" />
+              <line id="slider-radius-line" x1="160" y1="160" x2="235" y2="160" class="circle-line radius-line" />
+              <circle id="slider-center-point" cx="160" cy="160" r="6" class="center-point" />
+              <text id="slider-svg-radius-label" x="195" y="150" class="svg-label radius-label">r = 5 cm</text>
+              <text id="slider-svg-diameter-label" x="160" y="185" class="svg-label diameter-label">d = 10 cm</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subtab 3: Drag and Drop Activity -->
+      <div id="lab-drag" class="subtab-content">
+        <div class="lab-card">
+          <h3>Drag (or tap) labels to match the correct parts of the circle!</h3>
+          <p class="activity-instructions">Drag each tag or tap a tag then tap its matching drop target on the circle.</p>
+
+          <div class="drag-source-container" id="draggable-items">
+            <div class="draggable-item" draggable="true" data-type="center" id="drag-center">📍 Centre</div>
+            <div class="draggable-item" draggable="true" data-type="radius" id="drag-radius">📏 Radius</div>
+            <div class="draggable-item" draggable="true" data-type="diameter" id="drag-diameter">↔️ Diameter</div>
+          </div>
+
+          <div class="svg-wrapper drag-svg-container">
+            <svg id="drag-circle-svg" viewBox="0 0 320 320" aria-label="Circle Drag and Drop Target Diagram">
+              <circle cx="160" cy="160" r="90" class="circle-outline" />
+              <!-- Diameter line -->
+              <line x1="70" y1="160" x2="250" y2="160" class="circle-line diameter-line" />
+              <!-- Radius line -->
+              <line x1="160" y1="160" x2="160" y2="70" class="circle-line radius-line" />
+              <!-- Center point -->
+              <circle cx="160" cy="160" r="7" class="center-point" />
+            </svg>
+
+            <!-- Drop Zone Overlays (positioned relative to container) -->
+            <div class="drop-zone" data-target="center" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+              <span class="drop-placeholder">Drop Centre Here</span>
+            </div>
+            <div class="drop-zone" data-target="radius" style="top: 28%; left: 50%; transform: translate(-50%, -50%);">
+              <span class="drop-placeholder">Drop Radius Here</span>
+            </div>
+            <div class="drop-zone" data-target="diameter" style="top: 58%; left: 50%; transform: translate(-50%, -50%);">
+              <span class="drop-placeholder">Drop Diameter Here</span>
+            </div>
+          </div>
+
+          <div class="activity-controls">
+            <button id="check-drag-btn" class="btn btn-primary">Check Answers</button>
+            <button id="reset-drag-btn" class="btn btn-outline">Reset Activity</button>
+          </div>
+
+          <div id="drag-feedback" class="feedback-banner" hidden></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION 2 VIEW: Quiz Arena -->
+    <section id="mission2-view" class="view">
+      <div class="view-header">
+        <button class="btn btn-outline back-home-btn">← Back to Menu</button>
+        <h2>🎯 Mission 2: Quiz Arena</h2>
+      </div>
+
+      <div class="quiz-container">
+        <!-- Quiz Active View -->
+        <div id="quiz-active-card" class="lab-card">
+          <div class="quiz-meta">
+            <span id="quiz-progress">Question 1 of 5</span>
+            <span id="quiz-streak">Streak: 🔥 0</span>
+          </div>
+
+          <div class="quiz-question-box">
+            <h3 id="quiz-question-text">Loading question...</h3>
+            <div id="quiz-question-svg" class="svg-wrapper" style="max-height: 180px;"></div>
+          </div>
+
+          <div id="quiz-options" class="options-grid">
+            <!-- Options injected dynamically -->
+          </div>
+
+          <div id="quiz-explanation-box" class="info-box" hidden>
+            <h4 id="quiz-explain-title">Explanation</h4>
+            <p id="quiz-explain-body"></p>
+            <button id="quiz-next-btn" class="btn btn-primary">Next Question ▶</button>
+          </div>
+        </div>
+
+        <!-- Quiz Completed View -->
+        <div id="quiz-result-card" class="lab-card" hidden>
+          <div class="result-header">
+            <div class="result-badge">🏆 Quiz Complete!</div>
+            <h3 id="quiz-result-title">Great Job, Explorer!</h3>
+            <p id="quiz-result-score">You scored 5 out of 5 stars!</p>
+          </div>
+          <div class="stars-display" id="quiz-stars-earned">
+            ⭐⭐⭐⭐⭐
+          </div>
+          <button id="restart-quiz-btn" class="btn btn-secondary">Play Quiz Again 🔄</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION 3 VIEW: Real-Life Mission -->
+    <section id="mission3-view" class="view">
+      <div class="view-header">
+        <button class="btn btn-outline back-home-btn">← Back to Menu</button>
+        <h2>🚲 Mission 3: Real-Life Mission</h2>
+      </div>
+
+      <div class="real-life-container">
+        <div class="lab-card">
+          <h3>Circles are everywhere in Malaysia! Pick an object to inspect:</h3>
+          <div class="object-selector">
+            <button class="obj-btn active" data-obj="clock">⏰ Wall Clock</button>
+            <button class="obj-btn" data-obj="bicycle">🚲 Bicycle Wheel</button>
+            <button class="obj-btn" data-obj="coin">🪙 50-Sen Coin</button>
+            <button class="obj-btn" data-obj="roti">🫓 Roti Canai</button>
+          </div>
+
+          <div class="object-display-card">
+            <div class="object-visual">
+              <!-- Dynamic SVG representation of real-life object -->
+              <svg id="real-object-svg" viewBox="0 0 280 280" aria-label="Real Life Object Circle Diagram">
+                <!-- Outer object drawing will be updated by JS -->
+              </svg>
+            </div>
+            <div class="object-details">
+              <h3 id="object-title">Wall Clock</h3>
+              <p id="object-description">A typical wall clock found in Malaysian classrooms!</p>
+              <div class="object-measurements">
+                <div class="meas-item">
+                  <span class="label">Radius (r):</span>
+                  <span class="value" id="object-radius-val">12 cm</span>
+                </div>
+                <div class="meas-item">
+                  <span class="label">Diameter (d):</span>
+                  <span class="value" id="object-diameter-val">24 cm</span>
+                </div>
+              </div>
+              <div class="challenge-box">
+                <h4>🧠 Quick Challenge:</h4>
+                <p id="object-challenge-text">If the radius of this clock is 12 cm, what is its diameter?</p>
+                <div class="challenge-input-row">
+                  <input type="number" id="challenge-input" placeholder="Type answer in cm">
+                  <button id="challenge-check-btn" class="btn btn-primary">Check</button>
+                </div>
+                <p id="challenge-feedback" class="challenge-feedback"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="game-footer">
+    <p>Circle Quest | Designed for Malaysian Primary Mathematics Year 6 (KSSR 6.2.1 & 6.2.2)</p>
+  </footer>
+
+  <script src="app.js"></script>
 </body>
 </html>
